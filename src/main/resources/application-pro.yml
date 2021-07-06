@@ -1,0 +1,38 @@
+web:
+  upload-path: /Users/mac/Desktop/upload/
+spring:
+  resources:
+    static-locations: file:${web.upload-path}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: zw1234567
+    url: jdbc:mysql://localhost:3306/zhonghe?characterEncoding=utf-8&useSSL=true&serverTimezone=GMT
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 10MB
+server:
+  port: 7777
+mybatis-plus:
+  type-aliases-package: com.admin.zhonghe.domain
+  mapper-locations: classpath:mapper/**/*.xml
+jwt:
+  tokenHeader: Authorization #jwt存储的请求头
+  secret: admin #jwt秘钥
+  expiration: 60000 #jwt有效时长
+  tokenHead: Bearer #jwt负载开头
+
+
+
+logging:
+  level:
+    com:
+      admin:
+        zhonghe: debug

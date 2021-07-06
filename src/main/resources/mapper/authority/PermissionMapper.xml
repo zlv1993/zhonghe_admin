@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.zhonghe.mapper.authority.PermissionMapper">
+    <select id="getByName" resultType="Permission">
+       select  p.*  from zh_permission p,zh_user u,zh_role r,zh_role_permission rp,zh_user_role ur where
+       rp.permission_id=p.id
+       and r.id=rp.role_id
+       and ur.role_id=r.id
+       and u.id=ur.user_id
+       and p.type!=1
+       and u.username=#{name}
+    </select>
+
+
+
+    <select id="getById" parameterType="int"  resultType="Permission">
+        select  p.*  from zh_permission p,zh_role_permission rp where  rp.permission_id=p.id and rp.role_id=#{id}
+   </select>
+
+    <resultMap id="permissionRole" type="SpPermission">
+        <id property="id" column="id" />
+        <result property="pid" column="pid" />
+        <result property="url" column="url" />
+        <result property="redirect" column="redirect" />
+        <result property="component" column="component" />
+        <result property="name" column="name" />
+        <result property="icon" column="icon" />
+        <result property="type" column="type" />
+        <result property="jump" column="jump" />
+        <result property="display" column="display" />
+        <result property="createTime" column="pcreateTime" />
+        <result property="updateTime" column="pupdateTime" />
+        <collection property="spRoles"   ofType="SpRole">
+            <id property="id" column="rid"/>
+            <result property="name" column="rname" />
+            <result property="remark" column="remark" />
+            <result property="role" column="role" />
+            <result property="createTime" column="createTime" />
+            <result property="updateTime" column="updateTime" />
+        </collection>
+    </resultMap>
+
+    <select id="getPermissionRole" resultMap="permissionRole">
+       select  p.id, p.pid,p.url,p.redirect,  p.component,p.name,p.icon, p.type, p.create_time pcreateTime, p.update_time pupdateTime,       r.id rid,r.name rname,r.remark,r.role,r.create_time,r.update_time  from zh_permission p, zh_role_permission rp,zh_role r where p.id=rp.permission_id and r.id=rp.role_id and p.type=2
+    </select>
+
+
+</mapper>
